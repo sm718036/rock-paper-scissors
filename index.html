@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors</title>
+    <style>
+        body {
+            width: 100vw;
+            height: 100vh;
+            display: grid;
+            place-items: center;
+        }
+        .main {
+            width: 350px;
+            height: 250px;
+            display: grid;
+            grid-template-rows: 50px 200px;
+            border: 1px solid black;
+            border-radius: 1rem;
+            padding: 1rem 2rem;
+        }
+        .score {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid black;
+            gap: 1rem;
+        }
+        .controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+        }
+        button {
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div class="score-card">
+            <div class="score">
+                <div class="player-score">
+                    Player: <span>0</span>
+                </div>
+                <div class="round">
+                    Round <span class="round-no">1</span>
+                </div>
+                <div class="computer-score">
+                    Computer: <span>0</span>
+                </div>
+            </div>
+        </div>
+        <div class="controls">
+            <div class="human-choice-btns">
+                <button>Rock</button>
+                <button>Paper</button>
+                <button>Scissors</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        const humanScoreEl = document.querySelector(".player-score span");
+        const computerScoreEl = document.querySelector(".computer-score span");
+        const humanChoiceBtns = document.querySelectorAll("button");
+        const humanChoiceBtnContainer = document.querySelector(".human-choice-btns");
+        const roundNo = document.querySelector(".round-no");
+        const roundNoContainer = document.querySelector(".round");
+        let round = 1;
+        let humanScore = 0;
+        let computerScore = 0;
+        
+        function computerChoice(){
+            let choices = ["Rock", "Paper", "Scissors"]
+            let randNumber = Math.floor(Math.random() * choices.length)
+            let computerSelected = choices[randNumber];
+            return computerSelected;
+        }
+
+    
+        humanChoiceBtns.forEach(btn => {
+            btn.addEventListener("click", () => {
+                let humanSelected = btn.textContent;
+                let computerSelected = computerChoice();
+                let gamePlayed = playGame(humanSelected, computerSelected);
+                return;
+            })
+        })
+
+        function playGame(human, comp){
+            if(human === "Rock" && comp === "Scissors") {
+                humanScore++;
+            } else if(human === "Scissors" && comp === "Paper") {
+                humanScore++;
+            } else if(human === "Paper" && comp === "Rock") {
+                humanScore++;
+            } else if(comp === "Rock" && human === "Scissors") {
+                computerScore++;
+            } else if(comp === "Scissors" && human === "Paper") {
+                computerScore++;
+            } else if(comp === "Paper" && human === "Rock") {
+                computerScore++;
+            } else if(comp === "Rock" && human === "Paper") {
+                humanScore++;
+            } else if(comp === human) {
+                humanScore += 0;
+                computerScore += 0;
+            }
+            round++;
+            humanScoreEl.textContent = humanScore;
+            computerScoreEl.textContent = computerScore;
+            roundNo.textContent = round;
+            result();
+        }
+
+        function result(){
+            if(computerScore === 5 || humanScore === 5){
+                roundNoContainer.innerHTML = "Game End";
+                if(computerScore > humanScore) {
+                    humanChoiceBtnContainer.innerHTML = "<h3>You Lost, Computer Won the Game</h3>";
+                } else {
+                    humanChoiceBtnContainer.innerHTML = "<h3>Hurry!!! You Won.</h3>";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
